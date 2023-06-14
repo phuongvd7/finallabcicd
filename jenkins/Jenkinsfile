@@ -11,7 +11,7 @@
 	pipeline {
 		agent any
 		environment {
-			DOCKERHUB_CREDENTIALS= credentials('dockerhub')
+			DOCKERHUB_CREDENTIALS= credentials('dockerhubnotprivatekey')
 			DOCKER_IMAGE_NAME = "${dockerhubusername}/${dockerhubreponame}"
 			dockerImage = ''
 			

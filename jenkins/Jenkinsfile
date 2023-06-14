@@ -1,0 +1,62 @@
+	// git repository info
+	def gitRepository = 'git@github.com:phuongvd7/labcicd.git'
+	def gitBranch = 'master'
+	def gitlabCredential = 'github'
+
+
+	// Image infor in registry
+	def dockerhubusername = 'phuongvd7'
+	def dockerhubreponame = 'test'	
+
+	pipeline {
+		agent any
+		environment {
+			DOCKERHUB_CREDENTIALS= credentials('dockerhub')
+			DOCKER_IMAGE_NAME = "${dockerhubusername}/${dockerhubreponame}"
+			dockerImage = ''
+			
+		}
+		stages {
+		
+			stage('Checkout project') 
+			{
+			  steps 
+			  {
+				echo "checkout project"
+				git branch: gitBranch,
+				   credentialsId: gitlabCredential,
+				   url: gitRepository
+				sh "git reset --hard"
+			  }
+			}
+
+			stage('Build')
+			{
+			  steps{
+				script {
+					dockerImage = docker.build DOCKER_IMAGE_NAME + ":$BUILD_NUMBER"
+				}
+					//sh 'docker build . -t $DOCKER_IMAGE_NAME:$BUILD_NUMBER'     
+					echo 'Build Image Completed' 
+			  }
+			}
+			stage('Login and push images') {      	
+   			  steps{                       	
+				// script {
+          		// 	docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
+            	// 	dockerImage.push()					
+				// }
+				withCredentials([usernamePassword(credentialsId: 'logan_dockerhub', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
+					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
+					echo 'Login Completed'
+					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker logout'					
+				}
+     
+   			   }           
+			}	   
+
+		    }
+	}
+	   

@@ -1,7 +1,7 @@
 	// git repository info
 	def gitRepository = 'https://github.com/phuongvd7/finallabcicd.git'
 	def gitBranch = 'master'
-	def gitlabCredential = 'github'
+	def githubCredential = 'github'
 
 
 	// Image infor in registry
@@ -24,7 +24,7 @@
 			  {
 				echo "checkout project"
 				git branch: gitBranch,
-				   credentialsId: gitlabCredential,
+				   credentialsId: githubCredential,
 				   url: gitRepository
 				sh "git reset --hard"
 			  }

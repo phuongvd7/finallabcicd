@@ -2,7 +2,6 @@
   hosts: apiserver   
   become: True
   vars:
-
     user_home: /home/ec2-user
     server_home: /home/ec2-user
   tasks:

@@ -46,7 +46,7 @@
           		// 	docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
             	// 	dockerImage.push()					
 				// }
-				withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
+				withCredentials([usernamePassword(credentialsId: 'dockerhubnotprivatekey', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
 					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
 					echo 'Login Completed'
 					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'

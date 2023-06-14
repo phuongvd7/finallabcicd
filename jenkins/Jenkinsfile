@@ -24,7 +24,7 @@
 			  {
 				echo "checkout project"
 				git branch: gitBranch,
-				   credentialsId: githubCredential,
+				//    credentialsId: githubCredential,
 				   url: gitRepository
 				sh "git reset --hard"
 			  }

@@ -15,5 +15,6 @@ sudo chmod -v +x /usr/local/bin/docker-compose
 
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-
+# Reload a Linux user's group assignments to docker w/o logout
+newgrp docker
 ``` 

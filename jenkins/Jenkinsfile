@@ -1,5 +1,5 @@
 	// git repository info
-	def gitRepository = 'git@github.com:phuongvd7/labcicd.git'
+	def gitRepository = 'git@github.com:phuongvd7/finallabcicd.git'
 	def gitBranch = 'master'
 	def gitlabCredential = 'github'
 

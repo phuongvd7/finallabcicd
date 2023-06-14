@@ -9,7 +9,7 @@
 	def dockerhubreponame = 'test'	
 
 	pipeline {
-		agent any
+		agent { label 'slave' }
 		environment {
 			DOCKERHUB_CREDENTIALS= credentials('dockerhubnotprivatekey')
 			DOCKER_IMAGE_NAME = "${dockerhubusername}/${dockerhubreponame}"

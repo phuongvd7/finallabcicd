@@ -16,8 +16,7 @@
 			dockerImage = ''
 			
 		}
-		stages {
-		
+		stages {		
 			stage('Checkout project') 
 			{
 			  steps 
@@ -61,7 +60,7 @@
 			}	   
 			stage('Deploy') {
 				steps{
-				sh 'cd ansible'
+				sh 'cd $(pwd)/ansible'
 				sh 'ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
 				}
 			}

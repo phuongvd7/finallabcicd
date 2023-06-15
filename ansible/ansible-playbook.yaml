@@ -76,4 +76,4 @@
     - name: Start the updated containers
       docker_compose:
         project_src: "{{ server_home }}"
-        state: started
+        state: present

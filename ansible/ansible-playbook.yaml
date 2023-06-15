@@ -1,5 +1,5 @@
 - name: Deyploy the predictor api to EC2 server
-  hosts: apiserver   
+  hosts: client   
   become: True
   vars:
 

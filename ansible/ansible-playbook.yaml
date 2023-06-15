@@ -61,4 +61,4 @@
     - name: Run the server
       shell: "docker compose up -d"
       args:
-        chdir: /home/ubuntu/
+         chdir: "{{ server_home }}"

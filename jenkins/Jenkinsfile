@@ -1,12 +1,12 @@
 	// git repository info
 	def gitRepository = 'https://github.com/phuongvd7/finallabcicd.git'
-	def gitBranch = 'master'
+	def gitBranch = 'dev'
 	def githubCredential = 'github'
 
 
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
-	def dockerhubreponame = 'test'	
+	def dockerhubreponame = 'testdev'	
 
 	pipeline {
 		agent { label 'slave' }

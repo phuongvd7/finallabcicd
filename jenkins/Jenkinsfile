@@ -62,7 +62,7 @@
 			stage('Deploy') {
 				steps{
 				sh 'cd ansible'
-				sh 'ansible-playbook -i $(pwd)hosts ansible-playbook.yaml'
+				sh 'ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
 				}
 			}
 		}

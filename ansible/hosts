@@ -1,5 +1,5 @@
 [local]
-3.27.124.57
+ansible_host=127.0.0.1 ansible_ssh_private_key_file=/home/ec2-user/.ssh/id_rsa
 
 [client]
 3.27.81.250

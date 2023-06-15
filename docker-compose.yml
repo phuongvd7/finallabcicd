@@ -1,10 +1,10 @@
 version: "3.9"
 services:
   my-a:
-    # image: "nginx:latest"
-    build:
-      context: .
-      dockerfile: Dockerfile
+      image: "testdev:latest"
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     ports:
       - "80:80"
     # volumes:

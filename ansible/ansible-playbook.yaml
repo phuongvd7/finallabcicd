@@ -39,7 +39,7 @@
       apt:
         name: 
           - docker-ce
-          - docker-compose-plugin
+          - docker-compose
         state: latest
         update_cache: true
 
@@ -53,10 +53,10 @@
          name: docker
          enabled: yes
 
-    - name: Copy docker-compose.yaml to server
+    - name: Copy folder to server
       copy:
-        src:  docker-compose.yaml
+        src:  /final-lab-master
         dest: "{{ server_home }}"
 
     - name: Run the server
-      command: docker-compose up
+      command: docker compose up -d

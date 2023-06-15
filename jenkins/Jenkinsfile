@@ -59,7 +59,10 @@
      
    			   }           
 			}	   
-
-		    }
+			stage('Deploy') {
+				sh 'cd ansible'
+				sh 'cd ansible-playbook -i $(pwd) ansible-playbook.yaml'
+			}
+		}
 	}
 	   

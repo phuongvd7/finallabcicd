@@ -47,6 +47,7 @@
 				// }
 				withCredentials([usernamePassword(credentialsId: 'dockerhubnotprivatekey', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
 					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
+					sh 'docker login'
 					echo 'Login Completed'
 					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
 					sh 'docker push $DOCKER_IMAGE_NAME:latest'

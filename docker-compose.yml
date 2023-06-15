@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   my-a:
-      image: "testdev:latest"
+      image: "phuongvd7/testdev:latest"
     # build:
     #   context: .
     #   dockerfile: Dockerfile

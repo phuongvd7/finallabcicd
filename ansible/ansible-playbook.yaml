@@ -68,12 +68,12 @@
         project_src: "{{ server_home }}"
         state: absent
 
-    - name: Update Docker Compose configuration
-      docker_compose:
-        project_src: "{{ server_home }}"
-        state: present
+    # - name: Update Docker image configuration
+    #   docker_compose:
+    #     project_src: "{{ server_home }}"
+    #     state: present
 
-    - name: Start the updated containers
-      docker_compose:
-        project_src: "{{ server_home }}"
-        state: present
+    # - name: Start the updated containers
+    #   docker_compose:
+    #     project_src: "{{ server_home }}"
+    #     state: present

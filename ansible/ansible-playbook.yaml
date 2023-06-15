@@ -2,8 +2,8 @@
   hosts: apiserver   
   become: True
   vars:
-    user_home: /home/ec2-user
-    server_home: /home/ec2-user
+    user_home: /home/ubuntu
+    server_home: /home/ubuntu
   tasks:
     - name: Install aptitude
       apt:
@@ -38,7 +38,8 @@
       apt:
         name: 
           - docker-ce
-          - docker-compose-plugin
+          # - docker-compose-plugin
+          - docker-compose
         state: latest
         update_cache: true
 
@@ -54,8 +55,18 @@
 
     - name: Copy docker-compose.yaml to server
       copy:
-        src:  docker-compose.yaml
+        src:  ../docker-compose.yml
         dest: "{{ server_home }}"
-
+    - name: Copy Dockerfile to server
+      copy:
+        src:  ../Dockerfile
+        dest: "{{ server_home }}"
+    - name: Copy Dockerfile to server
+      copy:
+        src:  ../index.html
+        dest: "{{ server_home }}"
     - name: Run the server
-      command: docker-compose up
+      shell: docker compose up -d
+      args:
+        chdir: "{{ server_home }}"
+

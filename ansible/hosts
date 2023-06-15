@@ -1,5 +1,5 @@
 [local]
-127.0.0.1
+localhost ansible_connection=local
 
-[client]
-10.20.2.247
+[apiserver]
+52.62.83.112 ansible_user=ubuntu ansible_ssh_private_key_file=/home/phuongvd/Desktop/k/keylab.pem

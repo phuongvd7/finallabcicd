@@ -6,7 +6,7 @@
 
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
-	def dockerhubreponame = 'test'	
+	def dockerhubreponame = 'testmaster'	
 
 	pipeline {
 		agent { label 'slave' }

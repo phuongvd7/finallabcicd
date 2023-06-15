@@ -62,3 +62,18 @@
       shell: "docker compose up -d"
       args:
          chdir: "{{ server_home }}"
+
+    - name: Stop and remove existing containers
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: absent
+
+    - name: Update Docker Compose configuration
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: present
+
+    - name: Start the updated containers
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: started

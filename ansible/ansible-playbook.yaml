@@ -68,12 +68,16 @@
         project_src: "{{ server_home }}"
         state: absent
 
+    - name: Run the server
+      shell: "docker rmi $(docker images -a -q) -f"
+      args:
+         chdir: "{{ server_home }}"
     # - name: Update Docker image configuration
     #   docker_compose:
     #     project_src: "{{ server_home }}"
     #     state: present
 
-    # - name: Start the updated containers
-    #   docker_compose:
-    #     project_src: "{{ server_home }}"
-    #     state: present
+    - name: Start the updated containers
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: present

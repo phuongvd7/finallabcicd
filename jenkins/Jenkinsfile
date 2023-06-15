@@ -50,7 +50,9 @@
 					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
 					echo 'Login Completed'
 					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
-					sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker push $DOCKER_IMAGE_NAME:latest'
+					// sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker rmi $(docker images -a -q)'
 					sh 'docker logout'					
 				}
      

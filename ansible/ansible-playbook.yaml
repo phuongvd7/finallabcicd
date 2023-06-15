@@ -60,3 +60,4 @@
 
     - name: Run the server
       shell: docker compose up -d
+        chdir: "{{ server_home }}"

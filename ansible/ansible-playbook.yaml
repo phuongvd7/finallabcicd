@@ -1,8 +1,8 @@
 - name: Deyploy the predictor api to EC2 server
-  hosts: apiserver   
+  hosts: client   
   become: True
   vars:
-    user_home: /home/ubuntu
+    # user_home: /home/ubuntu
     server_home: /home/ubuntu
   tasks:
     - name: Install aptitude
@@ -53,20 +53,32 @@
          name: docker
          enabled: yes
 
-    - name: Copy docker-compose.yaml to server
+    - name: Copy docker-compose.yaml  to server
       copy:
         src:  ../docker-compose.yml
         dest: "{{ server_home }}"
-    - name: Copy Dockerfile to server
-      copy:
-        src:  ../Dockerfile
-        dest: "{{ server_home }}"
-    - name: Copy Dockerfile to server
-      copy:
-        src:  ../index.html
-        dest: "{{ server_home }}"
+
     - name: Run the server
-      shell: docker compose up -d
+      shell: "docker compose up -d"
       args:
-        chdir: "{{ server_home }}"
+         chdir: "{{ server_home }}"
+
+    - name: Stop and remove existing containers
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: absent
+
+    - name: Run the server
+      shell: "docker rmi $(docker images -a -q) -f"
+      args:
+         chdir: "{{ server_home }}"
+    # - name: Update Docker image configuration
+    #   docker_compose:
+    #     project_src: "{{ server_home }}"
+    #     state: present
+
+    - name: Start the updated containers
+      docker_compose:
+        project_src: "{{ server_home }}"
+        state: present
 

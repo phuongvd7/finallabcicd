@@ -1,12 +1,12 @@
 	// git repository info
 	def gitRepository = 'https://github.com/phuongvd7/finallabcicd.git'
-	def gitBranch = 'master'
+	def gitBranch = 'dev'
 	def githubCredential = 'github'
 
 
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
-	def dockerhubreponame = 'test'	
+	def dockerhubreponame = 'testdev'	
 
 	pipeline {
 		agent { label 'slave' }
@@ -50,13 +50,21 @@
 					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
 					echo 'Login Completed'
 					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
-					sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker push $DOCKER_IMAGE_NAME:latest'
+					// sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker rmi $(docker images -a -q) -f'
 					sh 'docker logout'					
-				}
+					}
      
-   			   }           
+   			   	}           
 			}	   
-
-		    }
+			stage('Deploy') {
+				steps{
+				sh 'cd $(pwd)/ansible && ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
+				// sh 'cd /ansible'
+				// sh 'ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
+				}
+			}
+	   }
 	}
 	   

@@ -55,7 +55,7 @@
 
     - name: Copy folder to server
       copy:
-        src:  /final-lab-master
+        src:  docker-compose.yml
         dest: "{{ server_home }}"
 
     - name: Run the server

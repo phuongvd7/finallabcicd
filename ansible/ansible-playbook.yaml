@@ -59,4 +59,4 @@
         dest: "{{ server_home }}"
 
     - name: Run the server
-      command: docker compose up -d
+      shell: docker compose up -d

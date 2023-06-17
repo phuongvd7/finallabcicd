@@ -3,15 +3,23 @@
 	def gitBranch = 'eks'
 	def githubCredential = 'github'
 
-
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
-	def dockerhubreponame = 'testeks'	
+	def dockerhubreponame = 'testargocd'	
     //helm param for upgrade
 	def helmRelease="myweb"
 	def namespace="default"
 	def helmValues = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo-value.yaml"
 	def helmChart = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo"
+	// argoCD 
+
+	def appConfigRepo = 'https://github.com/phuongvd7/app-helmchart.git'
+	def appConfigBranch = 'master'
+	def helmRepo = "app-helmchart"
+	def helmChart = "app-demo"
+	def helmValueFile = "app-demo/values.yaml"
+
+
 	pipeline {
 		agent { label 'slave' }
 		environment {
@@ -64,36 +72,24 @@
    			   }           
 			}	   
 		
-			stage('Deploy on EKS') {
-		
-               steps {
-					script {
-						
-						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb') == 0
-						if (releaseExists) {
-							echo 'Release found. Upgrading...'
-							// sh  "helm upgrade ${helmRelease} ${helmRelease}/ --values ${helmRelease}/values.yaml"
-								sh  "helm --namespace=$namespace upgrade $helmRelease $helmRelease/ --set image.repository=phuongvd7/testeks,image.tag=$BUILD_NUMBER"
-						} else {
-							// def helmRelease="myweb"
-							echo 'Release not found. Installing...'
-							sh "helm install ${helmRelease} ${helmRelease}/ --values ${helmRelease}/values.yaml"
-							// sh "helm --namespace=$namespace upgrade $helmRelease -f $helmValues $helmChart  image.repository=${DOCKER_IMAGE},image.tag=prod-0.${BUILD_NUMBER}"
-							// sh  "helm --namespace=$namespace upgrade $helmRelease $helmRelease/ --set image.repository=phuongvd7/testeks,image.tag=$BUILD_NUMBER"
-						}
-					}
-				}
 
-                }
+			stage('Update value in helm-chart') {
+				steps {
+				{
+					withCredentials([usernamePassword(credentialsId: 'githubuserpass', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+					sh """#!/bin/bash
+						[[ -d ${helmRepo} ]] && rm -r ${helmRepo}
+						git clone ${appConfigRepo} --branch ${appConfigBranch}
+						cd ${helmRepo}
+						sed -i 's|  tag: .*|  tag: "${BUILD_NUMBER}"|' ${helmValueFile}
+						git add . ; git commit -m "Update to version ${BUILD_NUMBER}";git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/phuongvd7/app-helmchart.git
+						cd ..
+						[[ -d ${helmRepo} ]] && rm -r ${helmRepo}
+						"""		
+					}				
+			}
 
-				// }
-
-				// steps {
-				// 	echo "Build Number: ${BUILD_NUMBER}"
-				// 	echo "Build Number: ${env.WORKSPACE}"
-				// 	echo "Build Number: ${env.DOCKER_IMAGE_NAME}"
-				// 	echo "build : ${githubCredential}"
-				// 	echo "build : ${helmStatusOutput}"
-				// }
+			}
 			}
 		}
+	}

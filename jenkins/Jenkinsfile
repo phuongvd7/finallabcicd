@@ -17,7 +17,7 @@
 	def helmRepo = "app-helmchart"
 	def helmChart = "app-demo"
 	def helmValueFile = "app-demo/values.yaml"
-
+	def version = "${BUILD_NUMBER}"
 
 	pipeline {
 		agent { label 'slave' }
@@ -97,8 +97,8 @@
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}
 					   cd ${helmRepo}
-					   sed -i 's|  tag: .*|  tag: "${BUILD_NUMBER}"|' ${helmValueFile}
-					   git add . ; git commit -m "Update to version ${BUILD_NUMBER}";git push git push git@github.com:phuongvd7/app-helmchart.git
+					   sed -i 's|  tag: .*|  tag: "${version}"|' ${helmValueFile}
+					   git add . ; git commit -m "Update to version ${version}"; git push git@github.com:phuongvd7/app-helmchart.git
 					   cd ..
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   """		

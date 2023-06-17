@@ -7,6 +7,8 @@
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
 	def dockerhubreponame = 'testeks'	
+    //Deploy on EKS info
+	def 
 
 	pipeline {
 		agent { label 'slave' }
@@ -69,14 +71,22 @@
 			// 	}
 			// }
 			stage('Deploy on EKS') {
-				steps{
-				// sh 'cd $(pwd)/ansible && ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
-				// sh '''
-				// 	cd ansible
-				// 	ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml
-				// '''
-				sh 'cd myweb'
-				echo 'complete'
+				// steps{
+				//    script {
+                //     def helmStatusOutput = sh(returnStdout: true, script: 'helm status myweb')
+                //     if (helmStatusOutput.contains('Error: release: not found')) {
+                //         echo 'Release not found. Installing...'
+                //         sh 'helm install myweb myweb/ --values myweb/values.yaml'
+                //     } else {
+                //         echo 'Release exists. Skipping installation...'
+                //     }
+                // }
+
+				// }
+
+				steps {
+					echo '$BUILD_NUMBER'
+					echo 'env.BUILD_NUMBER'
 				}
 			}
 		}

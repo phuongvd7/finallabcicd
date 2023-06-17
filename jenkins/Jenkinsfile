@@ -64,15 +64,20 @@
 			}	   
 		
 			stage('Deploy on EKS') {
-				steps{
-				   script {
-                    def helmStatusOutput = sh(returnStdout: true, script: 'helm status ${helmRelease}')
-                    if (helmStatusOutput.contains('Error: release: not found')) {
-                        echo 'Release not found. Installing...'
-                        sh 'helm install $helmRelease $helmRelease/ --values $helmRelease/values.yaml'
-                    } else {
-                        echo 'helm --namespace= upgrade $helmRelease -f '
-                    }
+		
+               steps {
+					script {
+						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb').trim() == 0
+						if (releaseExists) {
+							echo 'Release found. Upgrading...'
+							sh 'helm upgrade $helmRelease $helmRelease/ --values $helmRelease/values.yaml'
+						} else {
+							echo 'Release not found. Installing...'
+							sh 'helm install $helmRelease $helmRelease/ --values $helmRelease/values.yaml'
+						}
+					}
+				}
+
                 }
 
 				// }
@@ -82,8 +87,7 @@
 				// 	echo "Build Number: ${env.WORKSPACE}"
 				// 	echo "Build Number: ${env.DOCKER_IMAGE_NAME}"
 				// 	echo "build : ${githubCredential}"
+				// 	echo "build : ${helmStatusOutput}"
 				// }
 			}
 		}
-	}
-}

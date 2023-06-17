@@ -71,11 +71,11 @@
 						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb') == 0
 						if (releaseExists) {
 							echo 'Release found. Upgrading...'
-							sh 'helm upgrade ${helmRelease} ${helmRelease}/ --values ${helmRelease}/values.yaml'
+							sh  "helm upgrade ${helmRelease} ${helmRelease}/ --values ${helmRelease}/values.yaml"
 						} else {
 							// def helmRelease="myweb"
 							echo 'Release not found. Installing...'
-							sh 'helm install ${helmRelease} myweb/ --values myweb/values.yaml'
+							sh "helm install ${helmRelease} myweb/ --values abc/values.yaml"
 						}
 					}
 				}

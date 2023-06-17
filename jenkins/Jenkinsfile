@@ -87,6 +87,7 @@
 				steps {
 					echo "Build Number: ${BUILD_NUMBER}"
 					echo "Build Number: ${env.WORKSPACE}"
+					echo "Build Number: ${env.DOCKER_IMAGE_NAME}"
 				}
 			}
 		}

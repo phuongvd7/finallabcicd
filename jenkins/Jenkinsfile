@@ -67,6 +67,7 @@
 		
                steps {
 					script {
+						def helmRelease= 'myweb'
 						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb') == 0
 						if (releaseExists) {
 							echo 'Release found. Upgrading...'

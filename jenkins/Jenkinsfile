@@ -7,9 +7,10 @@
 	// Image infor in registry
 	def dockerhubusername = 'phuongvd7'
 	def dockerhubreponame = 'testeks'	
-    //Deploy on EKS info
-	// def 
-
+    //helm param for upgrade
+	def helmRelease="myweb"
+	def helmValues = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo-value.yaml"
+	def helmChart = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo"
 	pipeline {
 		agent { label 'slave' }
 		environment {
@@ -19,78 +20,70 @@
 			
 		}
 		stages {		
-			// stage('Checkout project') 
-			// {
-			//   steps 
-			//   {
-			// 	echo "checkout project"
-			// 	git branch: gitBranch,
-			// 	//    credentialsId: githubCredential,
-			// 	   url: gitRepository
-			// 	sh "git reset --hard"
-			//   }
-			// }
+			stage('Checkout project') 
+			{
+			  steps 
+			  {
+				echo "checkout project"
+				git branch: gitBranch,
+				//    credentialsId: githubCredential,
+				   url: gitRepository
+				sh "git reset --hard"
+			  }
+			}
 
-			// stage('Build')
-			// {
-			//   steps{
-			// 	// script {
-			// 	// 	dockerImage = docker.build DOCKER_IMAGE_NAME + ":$BUILD_NUMBER" 
-			// 	// }
-			// 		sh 'docker build . -t $DOCKER_IMAGE_NAME:$BUILD_NUMBER -t $DOCKER_IMAGE_NAME:latest'
-			// 		echo 'Build Image Completed' 
-			//   }
-			// }
-			// stage('Login and push images') {      	
-   			//   steps{                       	
-			// 	// script {
-          	// 	// 	docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
-            // 	// 	dockerImage.push()					
-			// 	// }
-			// 	withCredentials([usernamePassword(credentialsId: 'dockerhubnotprivatekey', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
-			// 		sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
-			// 		echo 'Login Completed'
-			// 		sh 'docker login'
-			// 		sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
-			// 		sh 'docker push $DOCKER_IMAGE_NAME:latest'
-			// 		// sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
-			// 		sh 'docker rmi $(docker images -a -q) -f'
-			// 		// sh 'docker logout'	
-			// 		// sh 'bash ./scripting/CI_notification.sh $DOCKER_IMAGE_NAME:$BUILD_NUMBER'				
-			// 	}
+			stage('Build')
+			{
+			  steps{
+				// script {
+				// 	dockerImage = docker.build DOCKER_IMAGE_NAME + ":$BUILD_NUMBER" 
+				// }
+					sh 'docker build . -t $DOCKER_IMAGE_NAME:$BUILD_NUMBER -t $DOCKER_IMAGE_NAME:latest'
+					echo 'Build Image Completed' 
+			  }
+			}
+			stage('Login and push images') {      	
+   			  steps{                       	
+				// script {
+          		// 	docker.withRegistry( '', DOCKERHUB_CREDENTIALS ) {
+            	// 	dockerImage.push()					
+				// }
+				withCredentials([usernamePassword(credentialsId: 'dockerhubnotprivatekey', passwordVariable: 'dockerhubpasswd', usernameVariable: 'dockerhubusername')]) {
+					sh 'echo $dockerhubpasswd | docker login -u $dockerhubusername --password-stdin'
+					echo 'Login Completed'
+					sh 'docker login'
+					sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker push $DOCKER_IMAGE_NAME:latest'
+					// sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER'
+					sh 'docker rmi $(docker images -a -q) -f'
+					// sh 'docker logout'	
+					// sh 'bash ./scripting/CI_notification.sh $DOCKER_IMAGE_NAME:$BUILD_NUMBER'				
+				}
      
-   			//    }           
-			// }	   
-			// stage('Deploy') {
-			// 	steps{
-			// 	// sh 'cd $(pwd)/ansible && ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml'
-			// 	sh '''
-			// 		cd ansible
-			// 		ansible-playbook -i $(pwd)/hosts ansible-playbook.yaml
-			// 	'''
-			// 	}
-			// }
+   			   }           
+			}	   
+		
 			stage('Deploy on EKS') {
-				// steps{
-				//    script {
-                //     def helmStatusOutput = sh(returnStdout: true, script: 'helm status myweb')
-                //     if (helmStatusOutput.contains('Error: release: not found')) {
-                //         echo 'Release not found. Installing...'
-                //         sh 'helm install myweb myweb/ --values myweb/values.yaml'
-                //     } else {
-                //         echo 'Release exists. Skipping installation...'
-                //     }
-                // }
+				steps{
+				   script {
+                    def helmStatusOutput = sh(returnStdout: true, script: 'helm status $helmRelease')
+                    if (helmStatusOutput.contains('Error: release: not found')) {
+                        echo 'Release not found. Installing...'
+                        sh 'helm install $helmRelease $helmRelease/ --values $helmRelease/values.yaml'
+                    } else {
+                        echo 'helm --namespace= upgrade $helmRelease -f '
+                    }
+                }
 
 				// }
 
-				steps {
-					echo "Build Number: ${BUILD_NUMBER}"
-					echo "Build Number: ${env.WORKSPACE}"
-					echo "Build Number: ${env.DOCKER_IMAGE_NAME}"
-					echo "build : ${githubCredential}"
-				}
+				// steps {
+				// 	echo "Build Number: ${BUILD_NUMBER}"
+				// 	echo "Build Number: ${env.WORKSPACE}"
+				// 	echo "Build Number: ${env.DOCKER_IMAGE_NAME}"
+				// 	echo "build : ${githubCredential}"
+				// }
 			}
 		}
 	}
-	   
+}

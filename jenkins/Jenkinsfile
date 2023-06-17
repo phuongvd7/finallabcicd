@@ -86,7 +86,7 @@
 
 				steps {
 					echo "Build Number: ${BUILD_NUMBER}"
-					echo "Build Number: ${env.BUILD_NUMBER}"
+					echo "Build Number: ${env.WORKSPACE}"
 				}
 			}
 		}

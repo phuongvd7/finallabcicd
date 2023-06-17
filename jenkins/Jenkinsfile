@@ -8,7 +8,7 @@
 	def dockerhubusername = 'phuongvd7'
 	def dockerhubreponame = 'testeks'	
     //Deploy on EKS info
-	def 
+	// def 
 
 	pipeline {
 		agent { label 'slave' }

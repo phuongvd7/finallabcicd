@@ -9,8 +9,7 @@
     //helm param for upgrade
 	def helmRelease="myweb"
 	def namespace="default"
-	def helmValues = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo-value.yaml"
-	def helmChart = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo"
+
 	// argoCD 
 
 	def appConfigRepo = 'https://github.com/phuongvd7/app-helmchart.git'

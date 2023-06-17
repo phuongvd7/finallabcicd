@@ -85,7 +85,7 @@
 				// }
 
 				steps {
-					echo '${BUILD_NUMBER}'
+					echo "Build Number: ${env.BUILD_NUMBER}"
 					echo '${env.BUILD_NUMBER}'
 				}
 			}

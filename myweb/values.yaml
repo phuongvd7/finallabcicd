@@ -5,7 +5,7 @@
 replicaCount: 3
 
 image:
-  repository: phuongvd7/testmaster
+  repository: phuongvd7/testeks
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"

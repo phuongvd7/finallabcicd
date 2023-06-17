@@ -92,13 +92,13 @@
 			// }
 			stage('Update value in helm-chart') {
               steps {
-				withCredentials([usernamePassword(credentialsId: 'githubuserpass', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+				withCredentials([sshUserPrivateKey(credentialsId: 'github',  usernameVariable: 'GIT_USERNAME')]) {
 				sh """#!/bin/bash
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}
 					   cd ${helmRepo}
 					   sed -i 's|  tag: .*|  tag: "${BUILD_NUMBER}"|' ${helmValueFile}
-					   git add . ; git commit -m "Update to version ${BUILD_NUMBER}";git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/phuongvd7/app-helmchart.git
+					   git add . ; git commit -m "Update to version ${BUILD_NUMBER}";git push git push git@github.com:phuongvd7/app-helmchart.git
 					   cd ..
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   """		

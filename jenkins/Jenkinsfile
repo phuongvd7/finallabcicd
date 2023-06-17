@@ -79,7 +79,7 @@
 							echo 'Release not found. Installing...'
 							sh "helm install ${helmRelease} ${helmRelease}/ --values ${helmRelease}/values.yaml"
 							// sh "helm --namespace=$namespace upgrade $helmRelease -f $helmValues $helmChart  image.repository=${DOCKER_IMAGE},image.tag=prod-0.${BUILD_NUMBER}"
-							sh  "helm --namespace=$namespace upgrade $helmRelease $helmRelease/ --set image.repository=phuongvd7/testeks,image.tag=$BUILD_NUMBER"
+							// sh  "helm --namespace=$namespace upgrade $helmRelease $helmRelease/ --set image.repository=phuongvd7/testeks,image.tag=$BUILD_NUMBER"
 						}
 					}
 				}

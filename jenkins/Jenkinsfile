@@ -85,8 +85,8 @@
 				// }
 
 				steps {
-					echo "Build Number: ${env.BUILD_NUMBER}"
-					echo '${env.BUILD_NUMBER}'
+					echo "Build Number: ${BUILD_NUMBER}"
+					echo "Build Number: ${DEPLOY_MAJOR_VERSION}"
 				}
 			}
 		}

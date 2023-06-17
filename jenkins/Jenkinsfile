@@ -8,7 +8,7 @@
 	def dockerhubusername = 'phuongvd7'
 	def dockerhubreponame = 'testeks'	
     //helm param for upgrade
-	// def helmRelease= 'myweb'
+	def helmRelease="myweb"
 	def helmValues = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo-value.yaml"
 	def helmChart = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo"
 	pipeline {
@@ -67,7 +67,7 @@
 		
                steps {
 					script {
-						def helmRelease="myweb"
+						
 						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb') == 0
 						if (releaseExists) {
 							echo 'Release found. Upgrading...'

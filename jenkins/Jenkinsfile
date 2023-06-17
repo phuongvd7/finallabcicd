@@ -92,7 +92,7 @@
 			// }
 			stage('Update value in helm-chart') {
               steps {
-				withCredentials([sshUserPrivateKey(credentialsId: 'githubkey',  )]) {
+				withCredentials([sshUserPrivateKey(credentialsId: 'githubkey', , keyFileVariable: 'SSH_KEY' )]) {
 				sh """#!/bin/bash
 					   [[ -d ${helmRepo} ]] && rm -r ${helmRepo}
 					   git clone ${appConfigRepo} --branch ${appConfigBranch}

@@ -85,8 +85,8 @@
 				// }
 
 				steps {
-					echo '$BUILD_NUMBER'
-					echo 'env.BUILD_NUMBER'
+					echo '${BUILD_NUMBER}'
+					echo '${env.BUILD_NUMBER}'
 				}
 			}
 		}

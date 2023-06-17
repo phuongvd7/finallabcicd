@@ -67,7 +67,7 @@
 		
                steps {
 					script {
-						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb').trim() == 0
+						def releaseExists = sh(returnStatus: true, script: 'helm list -q | grep -w myweb') == 0
 						if (releaseExists) {
 							echo 'Release found. Upgrading...'
 							sh 'helm upgrade $helmRelease $helmRelease/ --values $helmRelease/values.yaml'

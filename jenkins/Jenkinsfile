@@ -8,7 +8,7 @@
 	def dockerhubusername = 'phuongvd7'
 	def dockerhubreponame = 'testeks'	
     //helm param for upgrade
-	def helmRelease="myweb"
+	def helmRelease= 'myweb'
 	def helmValues = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo-value.yaml"
 	def helmChart = "/var/lib/jenkins/workspace/APP_DEMO/my-app/helmchart/app-demo"
 	pipeline {
@@ -66,7 +66,7 @@
 			stage('Deploy on EKS') {
 				steps{
 				   script {
-                    def helmStatusOutput = sh(returnStdout: true, script: 'helm status $helmRelease')
+                    def helmStatusOutput = sh(returnStdout: true, script: 'helm status ${helmRelease}')
                     if (helmStatusOutput.contains('Error: release: not found')) {
                         echo 'Release not found. Installing...'
                         sh 'helm install $helmRelease $helmRelease/ --values $helmRelease/values.yaml'
